@@ -2378,7 +2378,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "mswiki-scrapyard"
+name = "mswiki-wiz"
 version = "0.1.0"
 dependencies = [
  "serde",
