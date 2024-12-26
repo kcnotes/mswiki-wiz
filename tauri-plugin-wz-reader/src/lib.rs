@@ -49,7 +49,8 @@ pub fn init<R: Runtime>() -> TauriPlugin<R> {
         commands::parse_node,
         commands::unparse_node,
         commands::get_node_info,
-        commands::get_childs_info,
+        commands::get_children,
+        commands::parse_children,
     ]);
 
     app.setup(move |app, api| {

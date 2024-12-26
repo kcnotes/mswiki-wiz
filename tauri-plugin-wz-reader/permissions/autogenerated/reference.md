@@ -8,7 +8,8 @@ Allows initializing the plugin and reading wz files
 - `allow-parse-node`
 - `allow-unparse-node`
 - `allow-get-node-info`
-- `allow-get-childs-info`
+- `allow-get-children`
+- `allow-parse-children`
 
 ## Permission Table
 
@@ -41,6 +42,32 @@ Enables the execute command without any pre-configured scope.
 <td>
 
 Denies the execute command without any pre-configured scope.
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+`wz-reader:allow-get-children`
+
+</td>
+<td>
+
+Enables the get_children command without any pre-configured scope.
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+`wz-reader:deny-get-children`
+
+</td>
+<td>
+
+Denies the get_children command without any pre-configured scope.
 
 </td>
 </tr>
@@ -223,6 +250,32 @@ Enables the init command without any pre-configured scope.
 <td>
 
 Denies the init command without any pre-configured scope.
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+`wz-reader:allow-parse-children`
+
+</td>
+<td>
+
+Enables the parse_children command without any pre-configured scope.
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+`wz-reader:deny-parse-children`
+
+</td>
+<td>
+
+Denies the parse_children command without any pre-configured scope.
 
 </td>
 </tr>

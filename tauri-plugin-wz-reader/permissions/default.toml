@@ -2,11 +2,12 @@
 [default]
 description = "Allows initializing the plugin and reading wz files"
 permissions = [
-  "allow-init", 
-  "allow-get-png", 
+  "allow-init",
+  "allow-get-png",
   "allow-get-json",
-  "allow-parse-node", 
-  "allow-unparse-node", 
-  "allow-get-node-info", 
-  "allow-get-childs-info"
+  "allow-parse-node",
+  "allow-unparse-node",
+  "allow-get-node-info",
+  "allow-get-children",
+  "allow-parse-children"
 ]

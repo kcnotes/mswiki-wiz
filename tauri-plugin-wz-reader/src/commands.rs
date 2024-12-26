@@ -137,7 +137,7 @@ pub(crate) async fn get_png<R: Runtime>(
 }
 
 #[command]
-pub(crate) async fn get_childs_info<R: Runtime>(
+pub(crate) async fn get_children<R: Runtime>(
     _app: AppHandle<R>,
     _window: Window<R>,
     state: State<'_, WzReader<R>>,
@@ -169,3 +169,29 @@ pub(crate) async fn get_childs_info<R: Runtime>(
         })
         .collect())
 }
+
+#[command]
+pub(crate) async fn parse_children<R: Runtime>(
+    _app: AppHandle<R>,
+    _window: Window<R>,
+    state: State<'_, WzReader<R>>,
+    path: String,
+) -> Result<()> {
+    let node = if path.is_empty() {
+        state.node.clone()
+    } else {
+        state
+            .node
+            .read()
+            .unwrap()
+            .at_path(&path)
+            .ok_or(Error::NodeNotFound)?
+    };
+
+    node.write().unwrap().children.iter().for_each(|(_, node)| {
+        node_util::parse_node(&node).expect("Failed to parse node");
+    });
+
+    Ok(())
+}
+

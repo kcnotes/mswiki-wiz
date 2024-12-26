@@ -13,12 +13,18 @@
     "@mantine/core": "^7.15.2",
     "@mantine/form": "^7.15.2",
     "@mantine/hooks": "^7.15.2",
+    "@tabler/icons-react": "3.17.0",
+    "@tanstack/react-query": "^5.62.10",
+    "@tanstack/react-router": "^1.92.3",
     "@tauri-apps/api": "^2",
+    "@tauri-apps/plugin-dialog": "~2.2.0",
+    "@tauri-apps/plugin-fs": "~2",
     "@tauri-apps/plugin-opener": "^2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
+    "@tanstack/router-plugin": "^1.91.1",
     "@tauri-apps/cli": "^2",
     "@types/react": "^18.3.1",
     "@types/react-dom": "^18.3.1",

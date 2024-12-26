@@ -305,6 +305,16 @@
           "const": "deny-execute"
         },
         {
+          "description": "Enables the get_children command without any pre-configured scope.",
+          "type": "string",
+          "const": "allow-get-children"
+        },
+        {
+          "description": "Denies the get_children command without any pre-configured scope.",
+          "type": "string",
+          "const": "deny-get-children"
+        },
+        {
           "description": "Enables the get_childs_info command without any pre-configured scope.",
           "type": "string",
           "const": "allow-get-childs-info"
@@ -373,6 +383,16 @@
           "description": "Denies the init command without any pre-configured scope.",
           "type": "string",
           "const": "deny-init"
+        },
+        {
+          "description": "Enables the parse_children command without any pre-configured scope.",
+          "type": "string",
+          "const": "allow-parse-children"
+        },
+        {
+          "description": "Denies the parse_children command without any pre-configured scope.",
+          "type": "string",
+          "const": "deny-parse-children"
         },
         {
           "description": "Enables the parse_node command without any pre-configured scope.",
