@@ -22,7 +22,7 @@ export const WzReaderService = {
     return invoke('plugin:wz-reader|parse_children', { path });
   },
 
-  async getJson({ path }: { path: string }): Promise<unknown> {
+  async getJson<T>({ path }: { path: string }): Promise<T> {
     return invoke('plugin:wz-reader|get_json', { path });
   },
 

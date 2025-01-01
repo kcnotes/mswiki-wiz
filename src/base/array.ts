@@ -14,3 +14,5 @@ export const groupBy = <T, K extends keyof any>(list: T[], getKey: (item: T) => 
     },
     {} as Record<K, T[]>
   );
+
+export const unique = <T = any>(arr: T[]): T[] => [...new Set(arr)];

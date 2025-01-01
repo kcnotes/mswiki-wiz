@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import '@mantine/core/styles.css';
+import './base/string.css';
 import { createRouter, RouterProvider } from "@tanstack/react-router";
 import { routeTree } from './routeTree.gen';
 import { createTheme, MantineProvider } from "@mantine/core";

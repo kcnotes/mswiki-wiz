@@ -18,6 +18,7 @@ export type RowProps<T extends string> = {
 
 export type TableSortProps<T extends string> = {
   data: RowData<T>[],
+  hideSearch?: boolean,
   Header: React.ComponentType<HeaderProps<T>>,
   Row: React.ComponentType<RowProps<T>>
 };
@@ -48,10 +49,10 @@ export function TableHeader({ children, reversed, sorted, onSort }: TableHeaderP
 }
 
 function filterData<T extends string>(data: RowData<T>[], search: string) {
-  const query = search.toLowerCase().trim();
-  return data.filter((item) =>
-    keys(data[0]).some((key) => item[key].toLowerCase().includes(query)),
-  );
+  const query = search?.toLowerCase().trim();
+  return data.filter((item) => {
+    return keys(data[0]).some((key) => item[key] != null && item[key].toString().toLowerCase().includes(query));
+  });
 }
 
 function sortData<T extends string>(
@@ -76,7 +77,7 @@ function sortData<T extends string>(
   );
 }
 
-export function Table<T extends string>({ data, Header, Row }: TableSortProps<T>) {
+export function Table<T extends string>({ data, hideSearch, Header, Row }: TableSortProps<T>) {
   const [search, setSearch] = useState('');
   const [sortedData, setSortedData] = useState(data);
   const [sortBy, setSortBy] = useState<keyof RowData<T> | null>(null);
@@ -100,13 +101,12 @@ export function Table<T extends string>({ data, Header, Row }: TableSortProps<T>
   ));
 
   return (
-    <Stack>
-      <TextInput
+    <Stack gap="sm">
+      {!hideSearch && <TextInput
         placeholder="Search by any field"
-        mb="md"
         value={search}
         onChange={handleSearchChange}
-      />
+      />}
       <BaseTable horizontalSpacing="md" verticalSpacing="xs" miw={700}>
         <BaseTable.Thead>
           <Header setSorting={setSorting} sortBy={sortBy} reverseSortDirection={reverseSortDirection} />

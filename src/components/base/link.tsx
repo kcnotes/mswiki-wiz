@@ -5,9 +5,7 @@ import React from "react"
 const ButtonComponent = React.forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
   return <Button ref={ref} {...props} />
 })
-
 const CreatedButtonComponent = createLink(ButtonComponent)
-
 export const CustomButton: LinkComponent<typeof ButtonComponent> = (
   props,
 ) => {
@@ -17,9 +15,7 @@ export const CustomButton: LinkComponent<typeof ButtonComponent> = (
 const NavLinkComponent = React.forwardRef<HTMLAnchorElement, NavLinkProps>((props, ref) => {
   return <NavLink ref={ref} {...props} />
 })
-
 const CreatedNavLinkComponent = createLink(NavLinkComponent)
-
 export const CustomNavLink: LinkComponent<typeof NavLinkComponent> = (
   props,
 ) => {
