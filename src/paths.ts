@@ -4,7 +4,7 @@ export const Path = {
   questCategories: '/quests/categories',
   questCategory: '/quests/categories/:id',
   questSearch: '/quests/search',
-  quest: '/quests/:id',
+  quest: '/quests/q/:id',
 };
 
 export const Routes = {
@@ -13,5 +13,5 @@ export const Routes = {
   questCategories: () => '/quests/categories',
   questCategory: (id: string) => `/quests/categories/${id}`,
   questSearch: () => '/quests/search',
-  quest: (id: string) => `/quests/${id}`,
+  quest: (id: string) => `/quests/q/${id}`,
 }

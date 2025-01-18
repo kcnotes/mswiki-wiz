@@ -3,33 +3,14 @@ import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { Routes } from "../../paths";
 import { QuestService } from "../../services/quest_service";
+import { QuestContext } from "./quest_context";
+import React from "react";
 
 export const QuestPrerequisiteList = ({ id }: { id: number }) => {
-  const {
-    isLoading,
-    error,
-    data: quests,
-  } = useQuery({
-    queryKey: ['quest-prerequisites'],
-    queryFn: () => QuestService.getQuestPrerequisites(),
-  });
 
-  if (error != null) {
-    return (
-      <Text c="red">{`Failed to load. Error: ${error}`}</Text>
-    );
-  }
+  const {quests} = React.useContext(QuestContext);
 
-  if (isLoading || quests == null) {
-    return (
-      <Flex align="center" gap="xs">
-        <Loader />
-        <Text>Loading quest prerequisites</Text>
-      </Flex>
-    );
-  }
-
-  const requires = quests.find(q => q.id === id)?.requires?.flatMap(prereq => quests.find(qq => qq.id === prereq)).filter(q => q != null);
+  const requires = quests.find(q => Number(q.id.split('.')[0]) === id)?.requires?.flatMap(prereq => quests.find(qq => Number(qq.id.split('.')[0]) === prereq)).filter(q => q != null);
   const unlocks = quests.filter(q => q.requires?.includes(id));
 
   return (
@@ -40,7 +21,7 @@ export const QuestPrerequisiteList = ({ id }: { id: number }) => {
           <List>
             {requires.map(q => (
               <List.Item key={q.id}>
-                <Link to={Routes.quest(`${q.id}.img`)}>{q.name} ({q.id})</Link>
+                <Link to={Routes.quest(q.id)}>{q.name} ({q.id})</Link>
               </List.Item>
             ))}
           </List>
@@ -52,7 +33,7 @@ export const QuestPrerequisiteList = ({ id }: { id: number }) => {
           <List>
             {unlocks.map(q => (
               <List.Item key={q.id}>
-                <Link to={Routes.quest(`${q.id}.img`)}>{q.name} ({q.id})</Link>
+                <Link to={Routes.quest(q.id)}>{q.name} ({q.id})</Link>
               </List.Item>
             ))}
           </List>

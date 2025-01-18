@@ -1,4 +1,4 @@
-import { Button, ButtonProps, NavLink, NavLinkProps } from "@mantine/core"
+import { Anchor, AnchorProps, Button, ButtonProps, NavLink, NavLinkProps } from "@mantine/core"
 import { createLink, LinkComponent } from "@tanstack/react-router"
 import React from "react"
 
@@ -20,4 +20,14 @@ export const CustomNavLink: LinkComponent<typeof NavLinkComponent> = (
   props,
 ) => {
   return <CreatedNavLinkComponent preload="intent" {...props} />
+}
+
+const AnchorComponent = React.forwardRef<HTMLAnchorElement, AnchorProps>((props, ref) => {
+  return <Anchor ref={ref} {...props} />
+})
+const CreatedAnchorComponent = createLink(AnchorComponent)
+export const CustomAnchor: LinkComponent<typeof AnchorComponent> = (
+  props,
+) => {
+  return <CreatedAnchorComponent preload="intent" {...props} />
 }

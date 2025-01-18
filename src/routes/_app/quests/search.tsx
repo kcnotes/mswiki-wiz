@@ -5,21 +5,15 @@ import { QuestSummary, QuestService } from "../../../services/quest_service";
 import { useQuery } from "@tanstack/react-query";
 import { useForm } from "@mantine/form";
 import { Routes } from "../../../paths";
+import { QuestContext } from "../../../components/quest/quest_context";
 
 export const Route = createFileRoute("/_app/quests/search")({
   component: RouteComponent,
 });
 
 function RouteComponent() {
+  const {quests} = React.useContext(QuestContext);
   const [results, setResults] = React.useState<QuestSummary[]>([]);
-  const {
-    isPending,
-    error,
-    data: quests,
-  } = useQuery({
-    queryKey: ["quests"],
-    queryFn: QuestService.getQuestNames,
-  });
 
   const form = useForm({
     mode: "uncontrolled",
@@ -27,21 +21,6 @@ function RouteComponent() {
       search: "",
     },
   });
-
-  if (error != null) {
-    return (
-      <Text c="red">{`Failed to load. Error: ${error}`}</Text>
-    );
-  }
-
-  if (isPending || error || quests == null) {
-    return (
-      <Stack px="xs" align="center">
-        <Loader />
-        <Text>Loading all quests and categories (~30 seconds)</Text>
-      </Stack>
-    );
-  }
 
   function searchQuests(search: string) {
     const results = quests?.filter((q) => q.name?.toLowerCase().includes(search.toLowerCase()));

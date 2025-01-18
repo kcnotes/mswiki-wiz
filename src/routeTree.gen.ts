@@ -13,11 +13,12 @@
 import { Route as rootRoute } from './routes/__root'
 import { Route as AppImport } from './routes/_app'
 import { Route as IndexImport } from './routes/index'
+import { Route as AppQuestsImport } from './routes/_app/quests'
 import { Route as AppHomeImport } from './routes/_app/home'
 import { Route as AppQuestsSearchImport } from './routes/_app/quests/search'
 import { Route as AppQuestsCategoriesImport } from './routes/_app/quests/categories'
-import { Route as AppQuestsIdImport } from './routes/_app/quests/$id'
 import { Route as AppQuestsCategoriesIndexImport } from './routes/_app/quests/categories/index'
+import { Route as AppQuestsQIdImport } from './routes/_app/quests/q/$id'
 import { Route as AppQuestsCategoriesIdImport } from './routes/_app/quests/categories/$id'
 
 // Create/Update Routes
@@ -33,6 +34,12 @@ const IndexRoute = IndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const AppQuestsRoute = AppQuestsImport.update({
+  id: '/quests',
+  path: '/quests',
+  getParentRoute: () => AppRoute,
+} as any)
+
 const AppHomeRoute = AppHomeImport.update({
   id: '/home',
   path: '/home',
@@ -40,27 +47,27 @@ const AppHomeRoute = AppHomeImport.update({
 } as any)
 
 const AppQuestsSearchRoute = AppQuestsSearchImport.update({
-  id: '/quests/search',
-  path: '/quests/search',
-  getParentRoute: () => AppRoute,
+  id: '/search',
+  path: '/search',
+  getParentRoute: () => AppQuestsRoute,
 } as any)
 
 const AppQuestsCategoriesRoute = AppQuestsCategoriesImport.update({
-  id: '/quests/categories',
-  path: '/quests/categories',
-  getParentRoute: () => AppRoute,
-} as any)
-
-const AppQuestsIdRoute = AppQuestsIdImport.update({
-  id: '/quests/$id',
-  path: '/quests/$id',
-  getParentRoute: () => AppRoute,
+  id: '/categories',
+  path: '/categories',
+  getParentRoute: () => AppQuestsRoute,
 } as any)
 
 const AppQuestsCategoriesIndexRoute = AppQuestsCategoriesIndexImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => AppQuestsCategoriesRoute,
+} as any)
+
+const AppQuestsQIdRoute = AppQuestsQIdImport.update({
+  id: '/q/$id',
+  path: '/q/$id',
+  getParentRoute: () => AppQuestsRoute,
 } as any)
 
 const AppQuestsCategoriesIdRoute = AppQuestsCategoriesIdImport.update({
@@ -94,26 +101,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppHomeImport
       parentRoute: typeof AppImport
     }
-    '/_app/quests/$id': {
-      id: '/_app/quests/$id'
-      path: '/quests/$id'
-      fullPath: '/quests/$id'
-      preLoaderRoute: typeof AppQuestsIdImport
+    '/_app/quests': {
+      id: '/_app/quests'
+      path: '/quests'
+      fullPath: '/quests'
+      preLoaderRoute: typeof AppQuestsImport
       parentRoute: typeof AppImport
     }
     '/_app/quests/categories': {
       id: '/_app/quests/categories'
-      path: '/quests/categories'
+      path: '/categories'
       fullPath: '/quests/categories'
       preLoaderRoute: typeof AppQuestsCategoriesImport
-      parentRoute: typeof AppImport
+      parentRoute: typeof AppQuestsImport
     }
     '/_app/quests/search': {
       id: '/_app/quests/search'
-      path: '/quests/search'
+      path: '/search'
       fullPath: '/quests/search'
       preLoaderRoute: typeof AppQuestsSearchImport
-      parentRoute: typeof AppImport
+      parentRoute: typeof AppQuestsImport
     }
     '/_app/quests/categories/$id': {
       id: '/_app/quests/categories/$id'
@@ -121,6 +128,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/quests/categories/$id'
       preLoaderRoute: typeof AppQuestsCategoriesIdImport
       parentRoute: typeof AppQuestsCategoriesImport
+    }
+    '/_app/quests/q/$id': {
+      id: '/_app/quests/q/$id'
+      path: '/q/$id'
+      fullPath: '/quests/q/$id'
+      preLoaderRoute: typeof AppQuestsQIdImport
+      parentRoute: typeof AppQuestsImport
     }
     '/_app/quests/categories/': {
       id: '/_app/quests/categories/'
@@ -147,18 +161,30 @@ const AppQuestsCategoriesRouteChildren: AppQuestsCategoriesRouteChildren = {
 const AppQuestsCategoriesRouteWithChildren =
   AppQuestsCategoriesRoute._addFileChildren(AppQuestsCategoriesRouteChildren)
 
-interface AppRouteChildren {
-  AppHomeRoute: typeof AppHomeRoute
-  AppQuestsIdRoute: typeof AppQuestsIdRoute
+interface AppQuestsRouteChildren {
   AppQuestsCategoriesRoute: typeof AppQuestsCategoriesRouteWithChildren
   AppQuestsSearchRoute: typeof AppQuestsSearchRoute
+  AppQuestsQIdRoute: typeof AppQuestsQIdRoute
+}
+
+const AppQuestsRouteChildren: AppQuestsRouteChildren = {
+  AppQuestsCategoriesRoute: AppQuestsCategoriesRouteWithChildren,
+  AppQuestsSearchRoute: AppQuestsSearchRoute,
+  AppQuestsQIdRoute: AppQuestsQIdRoute,
+}
+
+const AppQuestsRouteWithChildren = AppQuestsRoute._addFileChildren(
+  AppQuestsRouteChildren,
+)
+
+interface AppRouteChildren {
+  AppHomeRoute: typeof AppHomeRoute
+  AppQuestsRoute: typeof AppQuestsRouteWithChildren
 }
 
 const AppRouteChildren: AppRouteChildren = {
   AppHomeRoute: AppHomeRoute,
-  AppQuestsIdRoute: AppQuestsIdRoute,
-  AppQuestsCategoriesRoute: AppQuestsCategoriesRouteWithChildren,
-  AppQuestsSearchRoute: AppQuestsSearchRoute,
+  AppQuestsRoute: AppQuestsRouteWithChildren,
 }
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
@@ -167,10 +193,11 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '': typeof AppRouteWithChildren
   '/home': typeof AppHomeRoute
-  '/quests/$id': typeof AppQuestsIdRoute
+  '/quests': typeof AppQuestsRouteWithChildren
   '/quests/categories': typeof AppQuestsCategoriesRouteWithChildren
   '/quests/search': typeof AppQuestsSearchRoute
   '/quests/categories/$id': typeof AppQuestsCategoriesIdRoute
+  '/quests/q/$id': typeof AppQuestsQIdRoute
   '/quests/categories/': typeof AppQuestsCategoriesIndexRoute
 }
 
@@ -178,9 +205,10 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '': typeof AppRouteWithChildren
   '/home': typeof AppHomeRoute
-  '/quests/$id': typeof AppQuestsIdRoute
+  '/quests': typeof AppQuestsRouteWithChildren
   '/quests/search': typeof AppQuestsSearchRoute
   '/quests/categories/$id': typeof AppQuestsCategoriesIdRoute
+  '/quests/q/$id': typeof AppQuestsQIdRoute
   '/quests/categories': typeof AppQuestsCategoriesIndexRoute
 }
 
@@ -189,10 +217,11 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_app': typeof AppRouteWithChildren
   '/_app/home': typeof AppHomeRoute
-  '/_app/quests/$id': typeof AppQuestsIdRoute
+  '/_app/quests': typeof AppQuestsRouteWithChildren
   '/_app/quests/categories': typeof AppQuestsCategoriesRouteWithChildren
   '/_app/quests/search': typeof AppQuestsSearchRoute
   '/_app/quests/categories/$id': typeof AppQuestsCategoriesIdRoute
+  '/_app/quests/q/$id': typeof AppQuestsQIdRoute
   '/_app/quests/categories/': typeof AppQuestsCategoriesIndexRoute
 }
 
@@ -202,29 +231,32 @@ export interface FileRouteTypes {
     | '/'
     | ''
     | '/home'
-    | '/quests/$id'
+    | '/quests'
     | '/quests/categories'
     | '/quests/search'
     | '/quests/categories/$id'
+    | '/quests/q/$id'
     | '/quests/categories/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | ''
     | '/home'
-    | '/quests/$id'
+    | '/quests'
     | '/quests/search'
     | '/quests/categories/$id'
+    | '/quests/q/$id'
     | '/quests/categories'
   id:
     | '__root__'
     | '/'
     | '/_app'
     | '/_app/home'
-    | '/_app/quests/$id'
+    | '/_app/quests'
     | '/_app/quests/categories'
     | '/_app/quests/search'
     | '/_app/quests/categories/$id'
+    | '/_app/quests/q/$id'
     | '/_app/quests/categories/'
   fileRoutesById: FileRoutesById
 }
@@ -260,22 +292,25 @@ export const routeTree = rootRoute
       "filePath": "_app.tsx",
       "children": [
         "/_app/home",
-        "/_app/quests/$id",
-        "/_app/quests/categories",
-        "/_app/quests/search"
+        "/_app/quests"
       ]
     },
     "/_app/home": {
       "filePath": "_app/home.tsx",
       "parent": "/_app"
     },
-    "/_app/quests/$id": {
-      "filePath": "_app/quests/$id.tsx",
-      "parent": "/_app"
+    "/_app/quests": {
+      "filePath": "_app/quests.tsx",
+      "parent": "/_app",
+      "children": [
+        "/_app/quests/categories",
+        "/_app/quests/search",
+        "/_app/quests/q/$id"
+      ]
     },
     "/_app/quests/categories": {
       "filePath": "_app/quests/categories.tsx",
-      "parent": "/_app",
+      "parent": "/_app/quests",
       "children": [
         "/_app/quests/categories/$id",
         "/_app/quests/categories/"
@@ -283,11 +318,15 @@ export const routeTree = rootRoute
     },
     "/_app/quests/search": {
       "filePath": "_app/quests/search.tsx",
-      "parent": "/_app"
+      "parent": "/_app/quests"
     },
     "/_app/quests/categories/$id": {
       "filePath": "_app/quests/categories/$id.tsx",
       "parent": "/_app/quests/categories"
+    },
+    "/_app/quests/q/$id": {
+      "filePath": "_app/quests/q/$id.tsx",
+      "parent": "/_app/quests"
     },
     "/_app/quests/categories/": {
       "filePath": "_app/quests/categories/index.tsx",

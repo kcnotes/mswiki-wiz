@@ -16,6 +16,8 @@ export type QuestSummary = {
   id: string,
   name?: string,
   area?: number,
+  blocked: boolean,
+  requires?: number[],
 };
 
 export type QuestPrerequisites = {
@@ -63,6 +65,7 @@ export type Quest = {
     2?: string,
     type?: string,
     area?: number,
+    blocked?: number,
     autoStart?: number,
     demandSummary?: string,
     name?: string,
@@ -81,6 +84,8 @@ export const QuestService = {
       id: questId,
       name: quest.QuestInfo.name,
       area: quest.QuestInfo.area,
+      blocked: quest.QuestInfo.blocked === 1,
+      requires: quest.Check['0']?.quest != null ? Object.values(quest.Check['0'].quest).map(q => q.id) : [],
     }));
   },
 
@@ -112,7 +117,7 @@ export const QuestService = {
 
   async getHydratedQuest({ img }: { img: string }) {
     const quest = await this.getQuest({ img });
-    const questDetail = mapQuest(quest);
+    const questDetail = mapQuest(img, quest);
     const fields = getRequestedFields([
       questDetail?.text.available || '',
       questDetail?.text.inProgress || '',

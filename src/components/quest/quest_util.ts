@@ -21,6 +21,7 @@ export const guessCategoryNames = (quests: QuestSummary[], questCategories: Ques
 };
 
 export type QuestDetail = {
+  id: number,
   name?: string,
   type?: string,
   text: {
@@ -41,8 +42,9 @@ export type QuestDetail = {
   startingNpc?: number,
 };
 
-export const mapQuest = (quest: Quest): QuestDetail => {
+export const mapQuest = (img: string, quest: Quest): QuestDetail => {
   return {
+    id: Number(img.slice(0, -4)),
     name: quest.QuestInfo.name,
     type: quest.QuestInfo.type,
     text: {
@@ -71,3 +73,14 @@ export const mapQuest = (quest: Quest): QuestDetail => {
     startingNpc: quest.Check['0']?.npc,
   }
 }
+
+export const mapLuaQuestDetailTemplate = (quests: QuestDetail[]): string => {
+  return `
+return {
+  ${quests.map(q => `  ["${q.id}"] = {
+    avail = "${q.text.available}",
+    prog  = "${q.text.inProgress}",
+    comp  = "${q.text.completed}"
+  }`).join(',\n')}
+}`;
+};
