@@ -1,8 +1,7 @@
-import { Button, Grid, Loader, Stack, Table, Text, TextInput } from "@mantine/core";
+import { Button, Grid, Stack, Table, TextInput } from "@mantine/core";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import React from "react";
-import { QuestSummary, QuestService } from "../../../services/quest_service";
-import { useQuery } from "@tanstack/react-query";
+import { QuestSummary } from "../../../services/quest_service";
 import { useForm } from "@mantine/form";
 import { Routes } from "../../../paths";
 import { QuestContext } from "../../../components/quest/quest_context";

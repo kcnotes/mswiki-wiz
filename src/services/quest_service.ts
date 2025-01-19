@@ -1,8 +1,9 @@
 import { unique } from "../base/array";
-import { getRequestedFields } from "../base/string";
+import { getRequestedFields, StringParams } from "../base/string";
 import { mapQuest } from "../components/quest/quest_util";
 import { ItemService } from "./item_service";
 import { MapService } from "./map_service";
+import { MobService } from "./mob_service";
 import { NpcService } from "./npc_service";
 import { WzReaderService } from "./wz_reader_service";
 
@@ -76,8 +77,14 @@ export type Quest = {
   }
 }
 
+export type HydratedQuest = {
+  quest: Quest,
+  questDetail: ReturnType<typeof mapQuest>,
+  stringParams: StringParams,
+}
+
 export const QuestService = {
-  async getQuestNames(): Promise<QuestSummary[]> {
+  async getQuestSummaries(): Promise<QuestSummary[]> {
     await WzReaderService.parseChildren({ path: QuestPaths.QUEST_DATA });
     const allQuests = await WzReaderService.getJson<Record<string, Quest>>({ path: QuestPaths.QUEST_DATA });
     return Object.entries(allQuests).map(([questId, quest]) => ({
@@ -87,6 +94,20 @@ export const QuestService = {
       blocked: quest.QuestInfo.blocked === 1,
       requires: quest.Check['0']?.quest != null ? Object.values(quest.Check['0'].quest).map(q => q.id) : [],
     }));
+  },
+
+  async getQuestNames(ids: number[]): Promise<Record<string, string>> {
+    const promises = ids.map((id) => (
+      new Promise(async (resolve) => resolve({
+        id,
+        name: (await WzReaderService.getJson<Quest>({ path: QuestPaths.QUEST_IMG(`${id}.img`) }))?.QuestInfo.name,
+      }))
+    ));
+    const quests = await Promise.all(promises) as { id: number, name: string }[];
+    return quests.reduce((acc: Record<string, string>, quest) => {
+      acc[quest.id] = quest.name;
+      return acc;
+    }, {});
   },
 
   async getQuestPrerequisites(): Promise<QuestPrerequisites[]> {
@@ -115,7 +136,7 @@ export const QuestService = {
     return await WzReaderService.getJson({ path: QuestPaths.QUEST_IMG(img) }) as Quest;
   },
 
-  async getHydratedQuest({ img }: { img: string }) {
+  async getHydratedQuest({ img }: { img: string }): Promise<HydratedQuest> {
     const quest = await this.getQuest({ img });
     const questDetail = mapQuest(img, quest);
     const fields = getRequestedFields([
@@ -133,8 +154,14 @@ export const QuestService = {
       items: await ItemService.getItemNames({ ids: fields.items }),
       itemImages: await ItemService.getItemImages({ ids: fields.items }),
       npcs: await NpcService.getNpcs({ ids: fields.npcs }),
-      mobs: {},
+      mobs: await MobService.getMobNames({ ids: fields.mobs }),
+      quests: await this.getQuestNames(fields.quests),
     };
     return { quest, questDetail, stringParams };
+  },
+
+  async getHydratedQuests({ ids }: { ids: string[] }): Promise<HydratedQuest[]> {
+    const quests = await Promise.all(ids.map((id) => this.getHydratedQuest({ img: id })));
+    return quests;
   }
 }

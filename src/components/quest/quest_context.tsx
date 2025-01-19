@@ -23,7 +23,7 @@ export const QuestContextProvider = ({ children }: { children: React.ReactNode }
     data: quests,
   } = useQuery({
     queryKey: ["quests"],
-    queryFn: QuestService.getQuestNames,
+    queryFn: QuestService.getQuestSummaries,
   });
   const {
     isLoading: isLoadingCategories,

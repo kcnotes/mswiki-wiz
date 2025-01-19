@@ -1,5 +1,6 @@
 import { groupBy } from "../../base/array";
-import { QuestSummary, QuestCategory, Quest, QuestItem } from "../../services/quest_service";
+import { getFormattedString } from "../../base/string";
+import { QuestSummary, QuestCategory, Quest, QuestItem, HydratedQuest } from "../../services/quest_service";
 
 export type QuestWithCategory = QuestSummary & { category: string };
 
@@ -24,6 +25,7 @@ export type QuestDetail = {
   id: number,
   name?: string,
   type?: string,
+  blocked?: boolean,
   text: {
     available?: string,
     inProgress?: string,
@@ -47,6 +49,7 @@ export const mapQuest = (img: string, quest: Quest): QuestDetail => {
     id: Number(img.slice(0, -4)),
     name: quest.QuestInfo.name,
     type: quest.QuestInfo.type,
+    blocked: quest.QuestInfo.blocked === 1,
     text: {
       available: quest.QuestInfo['0'],
       inProgress: quest.QuestInfo['1'],
@@ -74,13 +77,13 @@ export const mapQuest = (img: string, quest: Quest): QuestDetail => {
   }
 }
 
-export const mapLuaQuestDetailTemplate = (quests: QuestDetail[]): string => {
+export const mapLuaQuestDetailTemplate = (quests: HydratedQuest[]): string => {
   return `
 return {
-  ${quests.map(q => `  ["${q.id}"] = {
-    avail = "${q.text.available}",
-    prog  = "${q.text.inProgress}",
-    comp  = "${q.text.completed}"
+  ${quests.map(q => `  ['${q.questDetail.id}'] = {
+    avail = '${getFormattedString(q.questDetail.text.available ?? '', q.stringParams, 'wikitext').replace(/'/g, "\\'")}',
+    prog  = '${getFormattedString(q.questDetail.text.inProgress ?? '', q.stringParams, 'wikitext').replace(/'/g, "\\'")}',
+    comp  = '${getFormattedString(q.questDetail.text.completed ?? '', q.stringParams, 'wikitext').replace(/'/g, "\\'")}',
   }`).join(',\n')}
 }`;
 };

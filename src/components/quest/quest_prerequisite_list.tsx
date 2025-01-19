@@ -1,8 +1,6 @@
-import { Stack, Loader, Text, List, Flex } from "@mantine/core";
-import { useQuery } from "@tanstack/react-query";
+import { Stack, Text, List } from "@mantine/core";
 import { Link } from "@tanstack/react-router";
 import { Routes } from "../../paths";
-import { QuestService } from "../../services/quest_service";
 import { QuestContext } from "./quest_context";
 import React from "react";
 
@@ -22,6 +20,7 @@ export const QuestPrerequisiteList = ({ id }: { id: number }) => {
             {requires.map(q => (
               <List.Item key={q.id}>
                 <Link to={Routes.quest(q.id)}>{q.name} ({q.id})</Link>
+                {q.blocked && <Text span={true}> (blocked)</Text>}
               </List.Item>
             ))}
           </List>
@@ -34,6 +33,7 @@ export const QuestPrerequisiteList = ({ id }: { id: number }) => {
             {unlocks.map(q => (
               <List.Item key={q.id}>
                 <Link to={Routes.quest(q.id)}>{q.name} ({q.id})</Link>
+                {q.blocked && <Text span={true}> (blocked)</Text>}
               </List.Item>
             ))}
           </List>

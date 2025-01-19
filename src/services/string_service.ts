@@ -25,11 +25,13 @@ export const StringPaths = {
   STRING_ETC: "String/Etc.img",
   STRING_CASH: "String/Cash.img",
   STRING_EQUIP_ALL: "String/Eqp.img/Eqp",
+  STRING_MOB: "String/Mob.img",
   STRING_EQUIP_ID: (category: string, id: number) => `String/Eqp.img/Eqp/${category}/${id}`,
   STRING_USE_ID: (id: number) => `String/Consume.img/${id}`,
   STRING_INS_ID: (id: number) => `String/Ins.img/${id}`,
   STRING_ETC_ID: (id: number) => `String/Etc.img/Etc/${id}`,
   STRING_CASH_ID: (id: number) => `String/Cash.img/${id}`,
+  STRING_MOB_ID_NAME: (id: number) => `String/Mob.img/${id}/name`,
 
   STRING_MAP: "String/Map.img",
 };
@@ -65,12 +67,17 @@ export const StringService = {
         return undefined;
     }
   },
+  
   async getMapName({ id }: { id: number }): Promise<MapString | undefined> {
     await WzReaderService.parseNode({ path: StringPaths.STRING_MAP });
     const maps = await WzReaderService.getJson<MapStrings>({ path: StringPaths.STRING_MAP });
     for (const map of Object.values(maps)) {
       if (map[id]) return map[id];
     }
-  }
+  },
 
+  async getMobName({ id }: { id: number }): Promise<string | undefined> {
+    await WzReaderService.parseNode({ path: StringPaths.STRING_MOB });
+    return WzReaderService.getJson<string>({ path: StringPaths.STRING_MOB_ID_NAME(id) });
+  },
 };
