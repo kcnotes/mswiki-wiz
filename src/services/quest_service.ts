@@ -149,6 +149,10 @@ export const QuestService = {
       ...questDetail.inProgress.items.map(i => i.id),
       ...questDetail.complete.items.map(i => i.id),
     ]);
+    fields.npcs = unique([
+      ...fields.npcs,
+      ...questDetail.startingNpc != null ? [questDetail.startingNpc] : [],
+    ]);
     const stringParams = {
       maps: await MapService.getMapNames({ ids: fields.maps }),
       items: await ItemService.getItemNames({ ids: fields.items }),

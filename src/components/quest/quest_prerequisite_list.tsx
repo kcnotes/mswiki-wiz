@@ -1,8 +1,10 @@
-import { Stack, Text, List } from "@mantine/core";
+import { Stack, Text, List, ActionIcon, Tooltip, Flex } from "@mantine/core";
 import { Link } from "@tanstack/react-router";
 import { Routes } from "../../paths";
 import { QuestContext } from "./quest_context";
 import React from "react";
+import { IconCopy } from "@tabler/icons-react";
+import { copyQuestLink } from "./quest_util";
 
 export const QuestPrerequisiteList = ({ id }: { id: number }) => {
 
@@ -19,8 +21,15 @@ export const QuestPrerequisiteList = ({ id }: { id: number }) => {
           <List>
             {requires.map(q => (
               <List.Item key={q.id}>
-                <Link to={Routes.quest(q.id)}>{q.name} ({q.id})</Link>
-                {q.blocked && <Text span={true}> (blocked)</Text>}
+                <Flex gap="xs">
+                  <Link to={Routes.quest(q.id)}>{q.name} ({q.id})</Link>
+                  {q.blocked && <Text span={true}>(blocked)</Text>}
+                  <Tooltip label="Copy wikitext link">
+                    <ActionIcon variant="subtle" onClick={() => copyQuestLink(q.name)}>
+                      <IconCopy size={14} />
+                    </ActionIcon>
+                  </Tooltip>
+                </Flex>
               </List.Item>
             ))}
           </List>
@@ -32,8 +41,15 @@ export const QuestPrerequisiteList = ({ id }: { id: number }) => {
           <List>
             {unlocks.map(q => (
               <List.Item key={q.id}>
-                <Link to={Routes.quest(q.id)}>{q.name} ({q.id})</Link>
-                {q.blocked && <Text span={true}> (blocked)</Text>}
+                <Flex gap="xs">
+                  <Link to={Routes.quest(q.id)}>{q.name} ({q.id})</Link>
+                  {q.blocked && <Text span={true}> (blocked)</Text>}
+                  <Tooltip label="Copy wikitext link">
+                    <ActionIcon variant="subtle" onClick={() => copyQuestLink(q.name)}>
+                      <IconCopy size={14} />
+                    </ActionIcon>
+                  </Tooltip>
+                </Flex>
               </List.Item>
             ))}
           </List>

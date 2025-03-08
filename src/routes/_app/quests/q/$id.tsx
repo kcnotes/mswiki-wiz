@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
 import { QuestService } from '../../../../services/quest_service'
-import { Code, Divider, Loader, Stack, Table, Text, Textarea, Title } from '@mantine/core'
+import { Button, Code, Divider, Flex, Loader, Stack, Table, Text, Textarea, Title } from '@mantine/core'
 import { NpcService } from '../../../../services/npc_service'
 import React from 'react'
 import { getFormattedString } from '../../../../base/string'
@@ -10,6 +10,9 @@ import { Routes } from '../../../../paths'
 import { Topbar } from '../../../../components/navigation/topbar'
 import { QuestExporter } from '../../../../components/quest/quest_exporter'
 import { QuestContext, QuestContextProvider } from '../../../../components/quest/quest_context'
+import { copyQuestLink, getQuestPageWikitext } from '../../../../components/quest/quest_util'
+import { IconCopy } from '@tabler/icons-react'
+import { copy } from '../../../../components/base/copy'
 
 export const Route = createFileRoute('/_app/quests/q/$id')({
   component: RouteComponent,
@@ -79,6 +82,26 @@ function RouteComponent() {
           >
             {`${quest.questDetail.type ?? ''} ${quest.questDetail.name}${quest.questDetail.blocked ? ' (blocked)' : ''}`}
           </Title>
+          <Flex gap="xs">
+            <Button variant="outline" size="compact-sm" onClick={() => copy(quest.questDetail.id.toString())}>
+              <Flex align="center" gap="xs">
+                <IconCopy size={14} />
+                Copy ID
+              </Flex>
+            </Button>
+            <Button variant="outline" size="compact-sm" onClick={() => copyQuestLink(quest.questDetail.name)}>
+              <Flex align="center" gap="xs">
+                <IconCopy size={14} />
+                Copy link
+              </Flex>
+            </Button>
+            <Button variant="outline" size="compact-sm" onClick={() => copy(getQuestPageWikitext(quest, category))}>
+              <Flex align="center" gap="xs">
+                <IconCopy size={14} />
+                Copy page
+              </Flex>
+            </Button>
+          </Flex>
           <QuestPrerequisiteList id={Number(id.slice(0, -4))} />
           {startingNpcPng != null && (
             <img src={`data:image/png;base64,${startingNpcPng}`} />

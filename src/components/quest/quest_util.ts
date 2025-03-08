@@ -87,3 +87,44 @@ return {
   }`).join(',\n')}
 }`;
 };
+
+export const copyQuestLink = (quest?: string) => {
+  const wikitextQuest = quest?.replace(/\[/g, '(').replace(/\]/g, ')');
+  navigator.clipboard.writeText(`[[Quest/${wikitextQuest}|${quest}]]`);
+}
+
+export const getQuestPageWikitext = (quest: HydratedQuest, questCategory: string) => {
+  return `{{DISPLAYTITLE|${quest.questDetail.name}}}
+<!--${quest.questDetail.id}-->
+{{Infobox quest
+|name=${quest.questDetail.name}
+|npcimg=${quest.questDetail.startingNpc ? `NPC ${quest.stringParams.npcs[quest.questDetail.startingNpc]}.png` : ''}
+|npc=${quest.questDetail.startingNpc ? `[[${quest.stringParams.npcs[quest.questDetail.startingNpc]}]]` : 'Self'}
+|category=${questCategory}
+|type={{Quest Type|0-1}}
+|repeat=
+|kmsName=
+|jmsName=
+|cmsName=
+|tmsName=
+|seaName=
+}}
+Add description
+
+==Pre-requisites==
+*To have SOME QUEST completed
+${quest.questDetail.prerequisites.level ? `*At least Level ${quest.questDetail.prerequisites.level}` : ''}
+
+==Procedure==
+#TODO
+
+==Rewards==
+[[File:basicReward.png|link=|You will receive]]<br/>{{Quest Rewards}}
+
+==Unlocked Quest(s)==
+*TODO
+
+==Details==
+{{Quest Details|${questCategory}|id=${quest.questDetail.id}}}
+`;
+}
