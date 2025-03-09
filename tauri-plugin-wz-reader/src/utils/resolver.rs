@@ -2,7 +2,7 @@ use futures::future::{BoxFuture, FutureExt};
 use std::path::Path;
 use tokio::fs::{self, DirEntry};
 
-use wz_reader::{version::WzMapleVersion, WzNode, WzNodeArc, WzObjectType};
+use wz_reader::{version::WzMapleVersion, WzNode, WzNodeArc, WzNodeName, WzObjectType};
 
 use super::{block_parse, block_parse_with_parent};
 use crate::{Error, Result};
@@ -18,6 +18,52 @@ pub async fn get_root_wz_file_path(dir: &DirEntry) -> Option<String> {
     }
 
     None
+}
+
+
+fn resolve_packs(
+    path: impl AsRef<Path>,
+    base_node: &WzNodeArc,
+) {
+    if !path.as_ref().ends_with("Base.wz") {
+        return;
+    }
+    let packs_path = path.as_ref().parent().unwrap().parent().unwrap().join("Packs");
+    if packs_path.exists() {
+        for entry in packs_path.read_dir().unwrap() {
+            let entry = entry.unwrap();
+            let file_type = entry.file_type().unwrap();
+            if file_type.is_file() {
+                let file_path = entry.path();
+                let file_extension = file_path.extension().unwrap().to_str().unwrap();
+
+                if file_extension != "ms" {
+                    continue;
+                }
+
+                let node = WzNode::from_ms_file(
+                    file_path.to_str().unwrap(),
+                    Some(base_node),
+                )
+                .unwrap()
+                .into_lock();
+
+                let split = file_path.file_stem().unwrap().to_str().unwrap().split('_').collect::<Vec<&str>>();
+                let real_node_parent = split[0];
+
+                let base_write = base_node.write().unwrap();
+                let parent = base_write.at(real_node_parent).unwrap();
+                if node.write().unwrap().parse(&parent).is_ok() {
+                    for (name, child) in node.write().unwrap().children.drain() {
+                        let real_name = name.split('/').collect::<Vec<&str>>()[1];
+                        let real_node_name = WzNodeName::new(real_name);
+                        parent.write().unwrap().children.insert(real_node_name, child);
+                    }
+                }
+            }
+        }
+    }
+
 }
 
 pub fn resolve_root_wz_file_dir<'a>(
@@ -154,6 +200,7 @@ pub async fn resolve_base(path: &str, version: Option<WzMapleVersion>) -> Result
                 }
             }
         }
+        resolve_packs(path, &base_node);
     }
 
     Ok(base_node)

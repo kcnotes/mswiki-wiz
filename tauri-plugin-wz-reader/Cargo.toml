@@ -15,7 +15,7 @@ serde_json = "1.0"
 thiserror = "1.0"
 rayon = "1.9.0"
 image = { version = "0.25.0", default-features = false, features = ["rayon", "bmp", "webp", "png"] }
-wz_reader = { version = "0.0.13", features = ["json"]}
+wz_reader = { version = "0.0.14", features = ["json"]}
 tokio = { version = "1.0", features = ["net", "fs"] }
 futures = { version = "0.3.30" }
 axum = { version = "0.7.5", optional = true }
