@@ -25,7 +25,7 @@ export const Topbar = ({ crumbs }: { crumbs: Crumb[] }) => {
       </Flex>
       <Breadcrumbs>
         {crumbs.map(({ path, label }) => (
-          <CustomAnchor href={path} key={path}>
+          <CustomAnchor href={path} key={path} to={path}>
             <Text size="sm">{label}</Text>
           </CustomAnchor>
         ))}

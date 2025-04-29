@@ -49,7 +49,7 @@
           "minimum": 1.0
         },
         "description": {
-          "description": "Human-readable description of what the permission does. Tauri convention is to use <h4> headings in markdown content for Tauri documentation generation purposes.",
+          "description": "Human-readable description of what the permission does. Tauri convention is to use `<h4>` headings in markdown content for Tauri documentation generation purposes.",
           "type": [
             "string",
             "null"
@@ -111,7 +111,7 @@
           "type": "string"
         },
         "description": {
-          "description": "Human-readable description of what the permission does. Tauri internal convention is to use <h4> headings in markdown content for Tauri documentation generation purposes.",
+          "description": "Human-readable description of what the permission does. Tauri internal convention is to use `<h4>` headings in markdown content for Tauri documentation generation purposes.",
           "type": [
             "string",
             "null"
@@ -297,127 +297,152 @@
         {
           "description": "Enables the execute command without any pre-configured scope.",
           "type": "string",
-          "const": "allow-execute"
+          "const": "allow-execute",
+          "markdownDescription": "Enables the execute command without any pre-configured scope."
         },
         {
           "description": "Denies the execute command without any pre-configured scope.",
           "type": "string",
-          "const": "deny-execute"
+          "const": "deny-execute",
+          "markdownDescription": "Denies the execute command without any pre-configured scope."
         },
         {
           "description": "Enables the get_children command without any pre-configured scope.",
           "type": "string",
-          "const": "allow-get-children"
+          "const": "allow-get-children",
+          "markdownDescription": "Enables the get_children command without any pre-configured scope."
         },
         {
           "description": "Denies the get_children command without any pre-configured scope.",
           "type": "string",
-          "const": "deny-get-children"
+          "const": "deny-get-children",
+          "markdownDescription": "Denies the get_children command without any pre-configured scope."
         },
         {
           "description": "Enables the get_childs_info command without any pre-configured scope.",
           "type": "string",
-          "const": "allow-get-childs-info"
+          "const": "allow-get-childs-info",
+          "markdownDescription": "Enables the get_childs_info command without any pre-configured scope."
         },
         {
           "description": "Denies the get_childs_info command without any pre-configured scope.",
           "type": "string",
-          "const": "deny-get-childs-info"
+          "const": "deny-get-childs-info",
+          "markdownDescription": "Denies the get_childs_info command without any pre-configured scope."
         },
         {
           "description": "Enables the get_img command without any pre-configured scope.",
           "type": "string",
-          "const": "allow-get-img"
+          "const": "allow-get-img",
+          "markdownDescription": "Enables the get_img command without any pre-configured scope."
         },
         {
           "description": "Denies the get_img command without any pre-configured scope.",
           "type": "string",
-          "const": "deny-get-img"
+          "const": "deny-get-img",
+          "markdownDescription": "Denies the get_img command without any pre-configured scope."
         },
         {
           "description": "Enables the get_json command without any pre-configured scope.",
           "type": "string",
-          "const": "allow-get-json"
+          "const": "allow-get-json",
+          "markdownDescription": "Enables the get_json command without any pre-configured scope."
         },
         {
           "description": "Denies the get_json command without any pre-configured scope.",
           "type": "string",
-          "const": "deny-get-json"
+          "const": "deny-get-json",
+          "markdownDescription": "Denies the get_json command without any pre-configured scope."
         },
         {
           "description": "Enables the get_node_info command without any pre-configured scope.",
           "type": "string",
-          "const": "allow-get-node-info"
+          "const": "allow-get-node-info",
+          "markdownDescription": "Enables the get_node_info command without any pre-configured scope."
         },
         {
           "description": "Denies the get_node_info command without any pre-configured scope.",
           "type": "string",
-          "const": "deny-get-node-info"
+          "const": "deny-get-node-info",
+          "markdownDescription": "Denies the get_node_info command without any pre-configured scope."
         },
         {
           "description": "Enables the get_png command without any pre-configured scope.",
           "type": "string",
-          "const": "allow-get-png"
+          "const": "allow-get-png",
+          "markdownDescription": "Enables the get_png command without any pre-configured scope."
         },
         {
           "description": "Denies the get_png command without any pre-configured scope.",
           "type": "string",
-          "const": "deny-get-png"
+          "const": "deny-get-png",
+          "markdownDescription": "Denies the get_png command without any pre-configured scope."
         },
         {
           "description": "Enables the get_server_url command without any pre-configured scope.",
           "type": "string",
-          "const": "allow-get-server-url"
+          "const": "allow-get-server-url",
+          "markdownDescription": "Enables the get_server_url command without any pre-configured scope."
         },
         {
           "description": "Denies the get_server_url command without any pre-configured scope.",
           "type": "string",
-          "const": "deny-get-server-url"
+          "const": "deny-get-server-url",
+          "markdownDescription": "Denies the get_server_url command without any pre-configured scope."
         },
         {
           "description": "Enables the init command without any pre-configured scope.",
           "type": "string",
-          "const": "allow-init"
+          "const": "allow-init",
+          "markdownDescription": "Enables the init command without any pre-configured scope."
         },
         {
           "description": "Denies the init command without any pre-configured scope.",
           "type": "string",
-          "const": "deny-init"
+          "const": "deny-init",
+          "markdownDescription": "Denies the init command without any pre-configured scope."
         },
         {
           "description": "Enables the parse_children command without any pre-configured scope.",
           "type": "string",
-          "const": "allow-parse-children"
+          "const": "allow-parse-children",
+          "markdownDescription": "Enables the parse_children command without any pre-configured scope."
         },
         {
           "description": "Denies the parse_children command without any pre-configured scope.",
           "type": "string",
-          "const": "deny-parse-children"
+          "const": "deny-parse-children",
+          "markdownDescription": "Denies the parse_children command without any pre-configured scope."
         },
         {
           "description": "Enables the parse_node command without any pre-configured scope.",
           "type": "string",
-          "const": "allow-parse-node"
+          "const": "allow-parse-node",
+          "markdownDescription": "Enables the parse_node command without any pre-configured scope."
         },
         {
           "description": "Denies the parse_node command without any pre-configured scope.",
           "type": "string",
-          "const": "deny-parse-node"
+          "const": "deny-parse-node",
+          "markdownDescription": "Denies the parse_node command without any pre-configured scope."
         },
         {
           "description": "Enables the unparse_node command without any pre-configured scope.",
           "type": "string",
-          "const": "allow-unparse-node"
+          "const": "allow-unparse-node",
+          "markdownDescription": "Enables the unparse_node command without any pre-configured scope."
         },
         {
           "description": "Denies the unparse_node command without any pre-configured scope.",
           "type": "string",
-          "const": "deny-unparse-node"
+          "const": "deny-unparse-node",
+          "markdownDescription": "Denies the unparse_node command without any pre-configured scope."
         },
         {
-          "description": "Allows initializing the plugin and reading wz files",
+          "description": "Allows initializing the plugin and reading wz files\n#### This default permission set includes:\n\n- `allow-init`\n- `allow-get-png`\n- `allow-get-json`\n- `allow-parse-node`\n- `allow-unparse-node`\n- `allow-get-node-info`\n- `allow-get-children`\n- `allow-parse-children`",
           "type": "string",
-          "const": "default"
+          "const": "default",
+          "markdownDescription": "Allows initializing the plugin and reading wz files\n#### This default permission set includes:\n\n- `allow-init`\n- `allow-get-png`\n- `allow-get-json`\n- `allow-parse-node`\n- `allow-unparse-node`\n- `allow-get-node-info`\n- `allow-get-children`\n- `allow-parse-children`"
         }
       ]
     }

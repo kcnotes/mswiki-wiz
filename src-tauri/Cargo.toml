@@ -19,3 +19,4 @@ wz_reader = "0.0.14"
 tauri-plugin-wz-reader = { path = "../tauri-plugin-wz-reader" }
 tauri-plugin-dialog = "2"
 tauri-plugin-fs = "2"
+tauri-plugin-http = "2"

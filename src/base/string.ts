@@ -85,6 +85,89 @@ const getClose = (control: string, format: StringFormat) => {
   }
 };
 
+const PARAMETER_CHARACTERS = /[a-zA-Z0-9_]/g;
+/**
+ * At str[i] there is a #. Returns the parameter after the #.
+ */
+const getParameter = (str: string, i: number): string => {
+  let param = '';
+  i++;
+  while (i < str.length && str[i].match(PARAMETER_CHARACTERS)) {
+    param += str[i];
+    i++;
+  }
+  return param;
+}
+
+/**
+ * Iterates over a string and performs replacements
+ */
+export const parseString = (str: string, params: Record<string, string>, format: StringFormat) => {
+  str = str.replace(/</ig, '&lt;');
+  str = str.replace(/>/ig, '&gt;');
+
+  // Stack containing starting characters (e.g. start <span>)
+  let containerStack: string[] = [];
+  let i = 0;
+  let res = '';
+  
+  while (i < str.length) {
+    const c = str[i];
+    const next = str[i + 1]?.toLowerCase();
+
+    // Handle control characters
+    if (c === '#') {
+      const parameter = getParameter(str, i);
+      console.log('parameter', parameter);
+      if (params[parameter]) {
+        res += params[parameter];
+        i += parameter.length;
+      }
+      else if (next === CLOSE_CHARACTER) {
+        const control = containerStack.pop();
+        if (control) {
+          res += getClose(control, format);
+        }
+        i++; // Even if we don't find the close, we skip the close
+      } else if (next === RESET_CHARACTER) {
+        res += containerStack.reverse().map(c => getClose(c, format)).join('');
+        containerStack = [];
+        i++;
+      } else if (CONTAINER_CHARACTERS.includes(next)) {
+        const replacement = getContainer(next, format);
+        if (replacement) {
+          res += replacement;
+          containerStack.push(next);
+        }
+        i++;
+      } else {
+        // Most likely a single closing control character, e.g. #
+        const control = containerStack.pop();
+        if (control) {
+          res += getClose(control, format);
+        }
+      }
+    } else {
+      res += c;
+    }
+    i++;
+  }
+
+  res = res.replace(/(\r)?\n/ig, '<br />');
+  res = res.replace(/(\\r)?\\n/ig, '<br />');
+  res = res.replace(/(\/r)?\/n/ig, '<br />');
+  res = res.replace(/\/t/ig, '	');
+  
+  // Remove any starting or trailing new lines
+  res = res.replace(/^(<br \/>)+/ig, '');
+  res = res.replace(/(<br \/>)+$/ig, '');
+  res = res.trim();
+  return res;
+}
+
+/**
+ * TODO: use getString
+ */
 export const getFormattedString = (str: string, params: StringParams, format: StringFormat) => {
   str = str.replace(/</ig, '&lt;');
   str = str.replace(/>/ig, '&gt;');

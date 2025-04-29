@@ -9,6 +9,7 @@ pub fn run() {
         .plugin(tauri_plugin_wz_reader::init())
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_fs::init())
+        .plugin(tauri_plugin_http::init())
         .run(generate_context!())
         .expect("error while running tauri application");
 }

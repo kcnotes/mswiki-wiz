@@ -2,6 +2,8 @@
 
 Allows initializing the plugin and reading wz files
 
+#### This default permission set includes the following:
+
 - `allow-init`
 - `allow-get-png`
 - `allow-get-json`

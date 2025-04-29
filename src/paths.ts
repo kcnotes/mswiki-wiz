@@ -5,6 +5,10 @@ export const Path = {
   questCategory: '/quests/categories/:id',
   questSearch: '/quests/search',
   quest: '/quests/q/:id',
+  skillCategories: '/skills/categories',
+  skillCategory: '/skills/categories/:id',
+  skillSearch: '/skills/search',
+  skill: '/skills/s/:id',
 };
 
 export const Routes = {
@@ -14,4 +18,8 @@ export const Routes = {
   questCategory: (id: string) => `/quests/categories/${id}`,
   questSearch: () => '/quests/search',
   quest: (id: string) => `/quests/q/${id}`,
+  skillCategories: () => '/skills/categories',
+  skillCategory: (id: string) => `/skills/categories/${id}`,
+  skillSearch: () => '/skills/search',
+  skill: (id: string) => `/skills/s/${id}`,
 }

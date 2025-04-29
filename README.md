@@ -18,6 +18,7 @@ To run a local version of the tool, you will need:
 * Rust
 * Node.js
 * pnpm
+* CMake
 
 ```bash
 pnpm tauri dev

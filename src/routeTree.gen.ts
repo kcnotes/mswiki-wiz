@@ -13,11 +13,16 @@
 import { Route as rootRoute } from './routes/__root'
 import { Route as AppImport } from './routes/_app'
 import { Route as IndexImport } from './routes/index'
+import { Route as AppSkillsImport } from './routes/_app/skills'
 import { Route as AppQuestsImport } from './routes/_app/quests'
 import { Route as AppHomeImport } from './routes/_app/home'
+import { Route as AppSkillsSearchImport } from './routes/_app/skills/search'
 import { Route as AppQuestsSearchImport } from './routes/_app/quests/search'
 import { Route as AppQuestsCategoriesImport } from './routes/_app/quests/categories'
+import { Route as AppSkillsCategoriesIndexImport } from './routes/_app/skills/categories/index'
 import { Route as AppQuestsCategoriesIndexImport } from './routes/_app/quests/categories/index'
+import { Route as AppSkillsSIdImport } from './routes/_app/skills/s/$id'
+import { Route as AppSkillsCategoriesIdImport } from './routes/_app/skills/categories/$id'
 import { Route as AppQuestsQIdImport } from './routes/_app/quests/q/$id'
 import { Route as AppQuestsCategoriesIdImport } from './routes/_app/quests/categories/$id'
 
@@ -34,6 +39,12 @@ const IndexRoute = IndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const AppSkillsRoute = AppSkillsImport.update({
+  id: '/skills',
+  path: '/skills',
+  getParentRoute: () => AppRoute,
+} as any)
+
 const AppQuestsRoute = AppQuestsImport.update({
   id: '/quests',
   path: '/quests',
@@ -44,6 +55,12 @@ const AppHomeRoute = AppHomeImport.update({
   id: '/home',
   path: '/home',
   getParentRoute: () => AppRoute,
+} as any)
+
+const AppSkillsSearchRoute = AppSkillsSearchImport.update({
+  id: '/search',
+  path: '/search',
+  getParentRoute: () => AppSkillsRoute,
 } as any)
 
 const AppQuestsSearchRoute = AppQuestsSearchImport.update({
@@ -58,10 +75,28 @@ const AppQuestsCategoriesRoute = AppQuestsCategoriesImport.update({
   getParentRoute: () => AppQuestsRoute,
 } as any)
 
+const AppSkillsCategoriesIndexRoute = AppSkillsCategoriesIndexImport.update({
+  id: '/categories/',
+  path: '/categories/',
+  getParentRoute: () => AppSkillsRoute,
+} as any)
+
 const AppQuestsCategoriesIndexRoute = AppQuestsCategoriesIndexImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => AppQuestsCategoriesRoute,
+} as any)
+
+const AppSkillsSIdRoute = AppSkillsSIdImport.update({
+  id: '/s/$id',
+  path: '/s/$id',
+  getParentRoute: () => AppSkillsRoute,
+} as any)
+
+const AppSkillsCategoriesIdRoute = AppSkillsCategoriesIdImport.update({
+  id: '/categories/$id',
+  path: '/categories/$id',
+  getParentRoute: () => AppSkillsRoute,
 } as any)
 
 const AppQuestsQIdRoute = AppQuestsQIdImport.update({
@@ -108,6 +143,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppQuestsImport
       parentRoute: typeof AppImport
     }
+    '/_app/skills': {
+      id: '/_app/skills'
+      path: '/skills'
+      fullPath: '/skills'
+      preLoaderRoute: typeof AppSkillsImport
+      parentRoute: typeof AppImport
+    }
     '/_app/quests/categories': {
       id: '/_app/quests/categories'
       path: '/categories'
@@ -121,6 +163,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/quests/search'
       preLoaderRoute: typeof AppQuestsSearchImport
       parentRoute: typeof AppQuestsImport
+    }
+    '/_app/skills/search': {
+      id: '/_app/skills/search'
+      path: '/search'
+      fullPath: '/skills/search'
+      preLoaderRoute: typeof AppSkillsSearchImport
+      parentRoute: typeof AppSkillsImport
     }
     '/_app/quests/categories/$id': {
       id: '/_app/quests/categories/$id'
@@ -136,12 +185,33 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppQuestsQIdImport
       parentRoute: typeof AppQuestsImport
     }
+    '/_app/skills/categories/$id': {
+      id: '/_app/skills/categories/$id'
+      path: '/categories/$id'
+      fullPath: '/skills/categories/$id'
+      preLoaderRoute: typeof AppSkillsCategoriesIdImport
+      parentRoute: typeof AppSkillsImport
+    }
+    '/_app/skills/s/$id': {
+      id: '/_app/skills/s/$id'
+      path: '/s/$id'
+      fullPath: '/skills/s/$id'
+      preLoaderRoute: typeof AppSkillsSIdImport
+      parentRoute: typeof AppSkillsImport
+    }
     '/_app/quests/categories/': {
       id: '/_app/quests/categories/'
       path: '/'
       fullPath: '/quests/categories/'
       preLoaderRoute: typeof AppQuestsCategoriesIndexImport
       parentRoute: typeof AppQuestsCategoriesImport
+    }
+    '/_app/skills/categories/': {
+      id: '/_app/skills/categories/'
+      path: '/categories'
+      fullPath: '/skills/categories'
+      preLoaderRoute: typeof AppSkillsCategoriesIndexImport
+      parentRoute: typeof AppSkillsImport
     }
   }
 }
@@ -177,14 +247,34 @@ const AppQuestsRouteWithChildren = AppQuestsRoute._addFileChildren(
   AppQuestsRouteChildren,
 )
 
+interface AppSkillsRouteChildren {
+  AppSkillsSearchRoute: typeof AppSkillsSearchRoute
+  AppSkillsCategoriesIdRoute: typeof AppSkillsCategoriesIdRoute
+  AppSkillsSIdRoute: typeof AppSkillsSIdRoute
+  AppSkillsCategoriesIndexRoute: typeof AppSkillsCategoriesIndexRoute
+}
+
+const AppSkillsRouteChildren: AppSkillsRouteChildren = {
+  AppSkillsSearchRoute: AppSkillsSearchRoute,
+  AppSkillsCategoriesIdRoute: AppSkillsCategoriesIdRoute,
+  AppSkillsSIdRoute: AppSkillsSIdRoute,
+  AppSkillsCategoriesIndexRoute: AppSkillsCategoriesIndexRoute,
+}
+
+const AppSkillsRouteWithChildren = AppSkillsRoute._addFileChildren(
+  AppSkillsRouteChildren,
+)
+
 interface AppRouteChildren {
   AppHomeRoute: typeof AppHomeRoute
   AppQuestsRoute: typeof AppQuestsRouteWithChildren
+  AppSkillsRoute: typeof AppSkillsRouteWithChildren
 }
 
 const AppRouteChildren: AppRouteChildren = {
   AppHomeRoute: AppHomeRoute,
   AppQuestsRoute: AppQuestsRouteWithChildren,
+  AppSkillsRoute: AppSkillsRouteWithChildren,
 }
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
@@ -194,11 +284,16 @@ export interface FileRoutesByFullPath {
   '': typeof AppRouteWithChildren
   '/home': typeof AppHomeRoute
   '/quests': typeof AppQuestsRouteWithChildren
+  '/skills': typeof AppSkillsRouteWithChildren
   '/quests/categories': typeof AppQuestsCategoriesRouteWithChildren
   '/quests/search': typeof AppQuestsSearchRoute
+  '/skills/search': typeof AppSkillsSearchRoute
   '/quests/categories/$id': typeof AppQuestsCategoriesIdRoute
   '/quests/q/$id': typeof AppQuestsQIdRoute
+  '/skills/categories/$id': typeof AppSkillsCategoriesIdRoute
+  '/skills/s/$id': typeof AppSkillsSIdRoute
   '/quests/categories/': typeof AppQuestsCategoriesIndexRoute
+  '/skills/categories': typeof AppSkillsCategoriesIndexRoute
 }
 
 export interface FileRoutesByTo {
@@ -206,10 +301,15 @@ export interface FileRoutesByTo {
   '': typeof AppRouteWithChildren
   '/home': typeof AppHomeRoute
   '/quests': typeof AppQuestsRouteWithChildren
+  '/skills': typeof AppSkillsRouteWithChildren
   '/quests/search': typeof AppQuestsSearchRoute
+  '/skills/search': typeof AppSkillsSearchRoute
   '/quests/categories/$id': typeof AppQuestsCategoriesIdRoute
   '/quests/q/$id': typeof AppQuestsQIdRoute
+  '/skills/categories/$id': typeof AppSkillsCategoriesIdRoute
+  '/skills/s/$id': typeof AppSkillsSIdRoute
   '/quests/categories': typeof AppQuestsCategoriesIndexRoute
+  '/skills/categories': typeof AppSkillsCategoriesIndexRoute
 }
 
 export interface FileRoutesById {
@@ -218,11 +318,16 @@ export interface FileRoutesById {
   '/_app': typeof AppRouteWithChildren
   '/_app/home': typeof AppHomeRoute
   '/_app/quests': typeof AppQuestsRouteWithChildren
+  '/_app/skills': typeof AppSkillsRouteWithChildren
   '/_app/quests/categories': typeof AppQuestsCategoriesRouteWithChildren
   '/_app/quests/search': typeof AppQuestsSearchRoute
+  '/_app/skills/search': typeof AppSkillsSearchRoute
   '/_app/quests/categories/$id': typeof AppQuestsCategoriesIdRoute
   '/_app/quests/q/$id': typeof AppQuestsQIdRoute
+  '/_app/skills/categories/$id': typeof AppSkillsCategoriesIdRoute
+  '/_app/skills/s/$id': typeof AppSkillsSIdRoute
   '/_app/quests/categories/': typeof AppQuestsCategoriesIndexRoute
+  '/_app/skills/categories/': typeof AppSkillsCategoriesIndexRoute
 }
 
 export interface FileRouteTypes {
@@ -232,32 +337,47 @@ export interface FileRouteTypes {
     | ''
     | '/home'
     | '/quests'
+    | '/skills'
     | '/quests/categories'
     | '/quests/search'
+    | '/skills/search'
     | '/quests/categories/$id'
     | '/quests/q/$id'
+    | '/skills/categories/$id'
+    | '/skills/s/$id'
     | '/quests/categories/'
+    | '/skills/categories'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | ''
     | '/home'
     | '/quests'
+    | '/skills'
     | '/quests/search'
+    | '/skills/search'
     | '/quests/categories/$id'
     | '/quests/q/$id'
+    | '/skills/categories/$id'
+    | '/skills/s/$id'
     | '/quests/categories'
+    | '/skills/categories'
   id:
     | '__root__'
     | '/'
     | '/_app'
     | '/_app/home'
     | '/_app/quests'
+    | '/_app/skills'
     | '/_app/quests/categories'
     | '/_app/quests/search'
+    | '/_app/skills/search'
     | '/_app/quests/categories/$id'
     | '/_app/quests/q/$id'
+    | '/_app/skills/categories/$id'
+    | '/_app/skills/s/$id'
     | '/_app/quests/categories/'
+    | '/_app/skills/categories/'
   fileRoutesById: FileRoutesById
 }
 
@@ -292,7 +412,8 @@ export const routeTree = rootRoute
       "filePath": "_app.tsx",
       "children": [
         "/_app/home",
-        "/_app/quests"
+        "/_app/quests",
+        "/_app/skills"
       ]
     },
     "/_app/home": {
@@ -308,6 +429,16 @@ export const routeTree = rootRoute
         "/_app/quests/q/$id"
       ]
     },
+    "/_app/skills": {
+      "filePath": "_app/skills.tsx",
+      "parent": "/_app",
+      "children": [
+        "/_app/skills/search",
+        "/_app/skills/categories/$id",
+        "/_app/skills/s/$id",
+        "/_app/skills/categories/"
+      ]
+    },
     "/_app/quests/categories": {
       "filePath": "_app/quests/categories.tsx",
       "parent": "/_app/quests",
@@ -320,6 +451,10 @@ export const routeTree = rootRoute
       "filePath": "_app/quests/search.tsx",
       "parent": "/_app/quests"
     },
+    "/_app/skills/search": {
+      "filePath": "_app/skills/search.tsx",
+      "parent": "/_app/skills"
+    },
     "/_app/quests/categories/$id": {
       "filePath": "_app/quests/categories/$id.tsx",
       "parent": "/_app/quests/categories"
@@ -328,9 +463,21 @@ export const routeTree = rootRoute
       "filePath": "_app/quests/q/$id.tsx",
       "parent": "/_app/quests"
     },
+    "/_app/skills/categories/$id": {
+      "filePath": "_app/skills/categories/$id.tsx",
+      "parent": "/_app/skills"
+    },
+    "/_app/skills/s/$id": {
+      "filePath": "_app/skills/s/$id.tsx",
+      "parent": "/_app/skills"
+    },
     "/_app/quests/categories/": {
       "filePath": "_app/quests/categories/index.tsx",
       "parent": "/_app/quests/categories"
+    },
+    "/_app/skills/categories/": {
+      "filePath": "_app/skills/categories/index.tsx",
+      "parent": "/_app/skills"
     }
   }
 }
