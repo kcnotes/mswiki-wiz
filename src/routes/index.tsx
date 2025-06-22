@@ -23,7 +23,8 @@ function RouteComponent() {
       return setLoading(false)
     }
     try {
-      await WzReaderService.init({ path: file })
+      const version = await WzReaderService.init({ path: file });
+      console.log(version);
     } catch (e) {
       return setLoading(false)
     }

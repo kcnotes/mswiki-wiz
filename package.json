@@ -27,12 +27,15 @@
   "devDependencies": {
     "@tanstack/router-plugin": "^1.117.2",
     "@tauri-apps/cli": "^2.5.0",
+    "@types/jest": "^29.5.14",
     "@types/react": "^18.3.20",
     "@types/react-dom": "^18.3.6",
     "@vitejs/plugin-react": "^4.4.1",
+    "jest": "^29.7.0",
     "postcss": "^8.5.3",
     "postcss-preset-mantine": "^1.17.0",
     "postcss-simple-vars": "^7.0.1",
+    "ts-jest": "^29.3.2",
     "typescript": "~5.6.3",
     "vite": "^6.3.3"
   }

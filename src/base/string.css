@@ -9,3 +9,7 @@
 .red-text {
   color: #f00;
 }
+
+.mantine-Textarea-input {
+  font-family: var(--mantine-font-family-monospace);
+}

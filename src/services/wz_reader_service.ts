@@ -10,7 +10,7 @@ export type NodeChild = {
  * interact with the plugin, rather than calling parse/get directly.
  */
 export const WzReaderService = {
-  async init({ path }: { path: string }): Promise<null> {
+  async init({ path }: { path: string }): Promise<string> {
     return invoke('plugin:wz-reader|init', { path });
   },
 

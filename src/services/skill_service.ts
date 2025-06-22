@@ -1,4 +1,4 @@
-import { getBookId } from "../components/skill/skill_util";
+import { getBookId } from "../transforms/skill_book";
 import { WzReaderService } from "./wz_reader_service";
 
 export const SkillPaths = {
@@ -26,6 +26,7 @@ export type Skill = {
   info?: Record<string, any>,
   disable?: number,
   invisible?: number,
+  level?: Record<string, any>,
   icon: {
     _outlink?: string,
   }
@@ -66,6 +67,26 @@ export const SkillService = {
     const categoryId = getBookId(id);
     await WzReaderService.parseNode({ path: SkillPaths.SKILL_CATEGORY(categoryId) });
     return await WzReaderService.getJson({ path: SkillPaths.SKILL_INDIVIDUAL(categoryId, id) });
+  },
+
+  async getSkills(ids: string[]): Promise<Record<string, Skill>> {
+    const bookIds = [...new Set(ids.map(getBookId))];
+    const books = await Promise.allSettled(bookIds.map((bookId) => {
+      return SkillService.getSkillCategory(bookId);
+    }));
+    return books.reduce<Record<string, Skill>>((acc, book) => {
+      if (book.status === 'fulfilled') {
+        const skills = book.value.skill;
+        Object.entries(skills).forEach(([id, skill]) => {
+          if (skill && ids.includes(id)) {
+            acc[id] = skill;
+          }
+        });
+      } else {
+        console.error(`Failed to load skill category: ${book.reason}`);
+      }
+      return acc;
+    }, {});
   },
 
   async getSkillCategory(categoryId: string): Promise<SkillCategory> {

@@ -1,27 +1,18 @@
-import { Table, Text } from "@mantine/core";
-import { parseString } from "../../base/string";
+import { Button, Table, Text } from "@mantine/core";
 import { Skill, StringSkill } from "../../services/skill_service";
-import { getElementAttribute, getSkillProps, getSkillType } from "./skill_util";
+import { openUrl } from "@tauri-apps/plugin-opener";
+import { mapSkill } from "../../transforms/skill";
 
 export const SkillProps = ({ id, skill, strings }: {
   id: string,
   skill: Skill,
   strings: StringSkill | null,
 }) => {
-  const props = {
-    id,
-    name: strings?.name ?? '',
-    type: getSkillType(id),
-    elementAttribute: getElementAttribute(skill.info?.elemAttr),
-    levelRequirement: skill.info?.reqLev,
-    maxLevel: skill.common?.maxLevel,
-    combatOrders: skill.info?.combatOrders,
-    vSkill: skill.info?.vSkill,
-    bgm: skill.info?.bgm?.replace(/^.*\//g, ''),
-    description: parseString(strings?.desc ?? '', {}, 'wikitext'),
-    readout: strings?.h ?? '',
-    formula: parseString(strings?.h ?? '', getSkillProps(skill), 'wikitext'),
-  };
+  const props = mapSkill(id, skill, strings);
+
+  const openSkill = async (name: string) => {
+    await openUrl(`https://maplestorywiki.net/w/${name.replace(/ /g, '_')}`);
+  }
 
   return (
     <Table>
@@ -36,6 +27,16 @@ export const SkillProps = ({ id, skill, strings }: {
             </Table.Td>
           </Table.Tr>
         ))}
+        <Table.Tr>
+          <Table.Td>
+            <Text size="sm">Wiki link</Text>
+          </Table.Td>
+          <Table.Td>
+            <Button variant="subtle" onClick={() => openSkill(props.name)}>
+              {props.name}
+            </Button>
+          </Table.Td>
+        </Table.Tr>
       </Table.Tbody>
     </Table>
   );

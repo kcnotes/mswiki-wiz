@@ -1,14 +1,10 @@
-import { AnyRouter, createFileRoute, Link, useNavigate, useSearch } from '@tanstack/react-router';
+import { createFileRoute, Link, useNavigate, useSearch } from '@tanstack/react-router';
 import { SkillContext } from '../../../components/skill/skill_context';
 import React from 'react';
 import { Button, Grid, Stack, Table, TextInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { Routes } from '../../../paths';
-import { getBookname } from '../../../components/skill/skill_util';
-
-type SkillSearch = {
-  q: string,
-};
+import { getBookname } from '../../../transforms/skill_book';
 
 export const Route = createFileRoute('/_app/skills/search')({
   component: RouteComponent,
@@ -40,7 +36,7 @@ function RouteComponent() {
 
   function searchSkills(search: string) {
     const results = Object.entries(strings).filter(
-      ([i, s]) => s?.name?.toLowerCase().includes(search.toLowerCase())
+      ([_, s]) => s?.name?.toLowerCase().includes(search.toLowerCase())
     ).map(([i, s]) => ({
       id: i,
       name: s?.name ?? '',

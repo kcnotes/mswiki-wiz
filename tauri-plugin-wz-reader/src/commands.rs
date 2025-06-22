@@ -14,7 +14,7 @@ pub(crate) async fn init<R: Runtime>(
     state: State<'_, WzReader<R>>,
     path: String,
     version: Option<String>,
-) -> Result<()> {
+) -> Result<i32> {
     let version = version.map(|s| match s.as_str() {
         "GMS" => WzMapleVersion::GMS,
         "EMS" => WzMapleVersion::EMS,
@@ -22,13 +22,13 @@ pub(crate) async fn init<R: Runtime>(
         _ => WzMapleVersion::UNKNOWN,
     });
 
-    let base_node = utils::resolve_base(&path, version)
+    let (base_node, patch_version) = utils::resolve_base(&path, version)
         .await
         .map_err(|_| crate::Error::InitWzFailed)?;
-
+    
     state.replace_root(&base_node);
 
-    Ok(())
+    Ok(patch_version)
 }
 
 #[command]

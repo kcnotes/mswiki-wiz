@@ -9,6 +9,7 @@ export const Path = {
   skillCategory: '/skills/categories/:id',
   skillSearch: '/skills/search',
   skill: '/skills/s/:id',
+  skillExport: '/skills/export',
 };
 
 export const Routes = {

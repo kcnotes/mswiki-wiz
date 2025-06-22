@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
 import React from 'react'
 import { SkillCategory, SkillService } from '../../../../services/skill_service'
-import { Checkbox, Flex, Stack, Table, TableOfContents, Text, Title } from '@mantine/core';
+import { Checkbox, Flex, Stack, TableOfContents, Title } from '@mantine/core';
 import { SkillContext } from '../../../../components/skill/skill_context';
 import { Routes } from '../../../../paths';
 import { SkillProps } from '../../../../components/skill/skill_props';

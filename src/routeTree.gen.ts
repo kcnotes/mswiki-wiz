@@ -19,6 +19,7 @@ import { Route as AppHomeImport } from './routes/_app/home'
 import { Route as AppSkillsSearchImport } from './routes/_app/skills/search'
 import { Route as AppQuestsSearchImport } from './routes/_app/quests/search'
 import { Route as AppQuestsCategoriesImport } from './routes/_app/quests/categories'
+import { Route as AppSkillsExportIndexImport } from './routes/_app/skills/export/index'
 import { Route as AppSkillsCategoriesIndexImport } from './routes/_app/skills/categories/index'
 import { Route as AppQuestsCategoriesIndexImport } from './routes/_app/quests/categories/index'
 import { Route as AppSkillsSIdImport } from './routes/_app/skills/s/$id'
@@ -73,6 +74,12 @@ const AppQuestsCategoriesRoute = AppQuestsCategoriesImport.update({
   id: '/categories',
   path: '/categories',
   getParentRoute: () => AppQuestsRoute,
+} as any)
+
+const AppSkillsExportIndexRoute = AppSkillsExportIndexImport.update({
+  id: '/export/',
+  path: '/export/',
+  getParentRoute: () => AppSkillsRoute,
 } as any)
 
 const AppSkillsCategoriesIndexRoute = AppSkillsCategoriesIndexImport.update({
@@ -213,6 +220,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppSkillsCategoriesIndexImport
       parentRoute: typeof AppSkillsImport
     }
+    '/_app/skills/export/': {
+      id: '/_app/skills/export/'
+      path: '/export'
+      fullPath: '/skills/export'
+      preLoaderRoute: typeof AppSkillsExportIndexImport
+      parentRoute: typeof AppSkillsImport
+    }
   }
 }
 
@@ -252,6 +266,7 @@ interface AppSkillsRouteChildren {
   AppSkillsCategoriesIdRoute: typeof AppSkillsCategoriesIdRoute
   AppSkillsSIdRoute: typeof AppSkillsSIdRoute
   AppSkillsCategoriesIndexRoute: typeof AppSkillsCategoriesIndexRoute
+  AppSkillsExportIndexRoute: typeof AppSkillsExportIndexRoute
 }
 
 const AppSkillsRouteChildren: AppSkillsRouteChildren = {
@@ -259,6 +274,7 @@ const AppSkillsRouteChildren: AppSkillsRouteChildren = {
   AppSkillsCategoriesIdRoute: AppSkillsCategoriesIdRoute,
   AppSkillsSIdRoute: AppSkillsSIdRoute,
   AppSkillsCategoriesIndexRoute: AppSkillsCategoriesIndexRoute,
+  AppSkillsExportIndexRoute: AppSkillsExportIndexRoute,
 }
 
 const AppSkillsRouteWithChildren = AppSkillsRoute._addFileChildren(
@@ -294,6 +310,7 @@ export interface FileRoutesByFullPath {
   '/skills/s/$id': typeof AppSkillsSIdRoute
   '/quests/categories/': typeof AppQuestsCategoriesIndexRoute
   '/skills/categories': typeof AppSkillsCategoriesIndexRoute
+  '/skills/export': typeof AppSkillsExportIndexRoute
 }
 
 export interface FileRoutesByTo {
@@ -310,6 +327,7 @@ export interface FileRoutesByTo {
   '/skills/s/$id': typeof AppSkillsSIdRoute
   '/quests/categories': typeof AppQuestsCategoriesIndexRoute
   '/skills/categories': typeof AppSkillsCategoriesIndexRoute
+  '/skills/export': typeof AppSkillsExportIndexRoute
 }
 
 export interface FileRoutesById {
@@ -328,6 +346,7 @@ export interface FileRoutesById {
   '/_app/skills/s/$id': typeof AppSkillsSIdRoute
   '/_app/quests/categories/': typeof AppQuestsCategoriesIndexRoute
   '/_app/skills/categories/': typeof AppSkillsCategoriesIndexRoute
+  '/_app/skills/export/': typeof AppSkillsExportIndexRoute
 }
 
 export interface FileRouteTypes {
@@ -347,6 +366,7 @@ export interface FileRouteTypes {
     | '/skills/s/$id'
     | '/quests/categories/'
     | '/skills/categories'
+    | '/skills/export'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -362,6 +382,7 @@ export interface FileRouteTypes {
     | '/skills/s/$id'
     | '/quests/categories'
     | '/skills/categories'
+    | '/skills/export'
   id:
     | '__root__'
     | '/'
@@ -378,6 +399,7 @@ export interface FileRouteTypes {
     | '/_app/skills/s/$id'
     | '/_app/quests/categories/'
     | '/_app/skills/categories/'
+    | '/_app/skills/export/'
   fileRoutesById: FileRoutesById
 }
 
@@ -436,7 +458,8 @@ export const routeTree = rootRoute
         "/_app/skills/search",
         "/_app/skills/categories/$id",
         "/_app/skills/s/$id",
-        "/_app/skills/categories/"
+        "/_app/skills/categories/",
+        "/_app/skills/export/"
       ]
     },
     "/_app/quests/categories": {
@@ -477,6 +500,10 @@ export const routeTree = rootRoute
     },
     "/_app/skills/categories/": {
       "filePath": "_app/skills/categories/index.tsx",
+      "parent": "/_app/skills"
+    },
+    "/_app/skills/export/": {
+      "filePath": "_app/skills/export/index.tsx",
       "parent": "/_app/skills"
     }
   }

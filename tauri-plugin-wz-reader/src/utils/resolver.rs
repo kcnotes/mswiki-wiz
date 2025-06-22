@@ -147,7 +147,7 @@ pub fn resolve_root_wz_file_dir<'a>(
     .boxed()
 }
 
-pub async fn resolve_base(path: &str, version: Option<WzMapleVersion>) -> Result<WzNodeArc> {
+pub async fn resolve_base(path: &str, version: Option<WzMapleVersion>) -> Result<(WzNodeArc, i32)> {
     if !path.ends_with("Base.wz") {
         return Err(Error::Io(std::io::Error::new(
             std::io::ErrorKind::InvalidInput,
@@ -203,5 +203,5 @@ pub async fn resolve_base(path: &str, version: Option<WzMapleVersion>) -> Result
         resolve_packs(path, &base_node);
     }
 
-    Ok(base_node)
+    Ok((base_node, patch_version))
 }

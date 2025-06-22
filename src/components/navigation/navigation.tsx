@@ -15,6 +15,7 @@ export const Navigation = () => {
           <NavLink leftSection={<IconBook2 />} label="Skills">
             <CustomNavLink to={Path.skillCategories} label="By category" />
             <CustomNavLink to={Path.skillSearch} label="By search" />
+            <CustomNavLink to={Path.skillExport} label="Export" />
           </NavLink>
         </div>
         <CustomNavLink to={Path.root} leftSection={<IconFolderCode />} label="Base.wz" />

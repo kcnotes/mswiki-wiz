@@ -1,13 +1,12 @@
-import { Flex, Stack, Table, Text, Title } from '@mantine/core';
+import { Flex, Stack, Textarea, Title } from '@mantine/core';
 import { createFileRoute } from '@tanstack/react-router'
 import { Topbar } from '../../../../components/navigation/topbar';
-import { getBookId, getBookname, getSkillProps } from '../../../../components/skill/skill_util';
+import { getBookId, getBookname } from '../../../../transforms/skill_book';
 import { SkillContext } from '../../../../components/skill/skill_context';
 import React from 'react';
 import { Routes } from '../../../../paths';
 import { useQuery } from '@tanstack/react-query';
 import { SkillService } from '../../../../services/skill_service';
-import { parseString } from '../../../../base/string';
 import { SkillProps } from '../../../../components/skill/skill_props';
 
 export const Route = createFileRoute('/_app/skills/s/$id')({
@@ -26,7 +25,6 @@ function RouteComponent() {
 
   const {
     isLoading,
-    error,
     data: skill,
   } = useQuery({
     queryKey: ["skill", id],
@@ -48,6 +46,10 @@ function RouteComponent() {
         <Title order={2}>{strings[id]?.name ?? 'Unknown skill'} ({id})</Title>
       </Flex>
       <SkillProps id={id} skill={skill} strings={strings[id]} />
+      <Textarea
+        value={JSON.stringify({skill, string: strings[id]}, null, 2)}
+        rows={18}
+      />
     </Stack>
   );
 }
