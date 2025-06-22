@@ -1,6 +1,6 @@
 [package]
 name = "mswiki-wiz"
-version = "0.1.1"
+version = "0.1.2"
 description = "MapleStory Wiki: Wiz"
 authors = ["Winter"]
 edition = "2021"
