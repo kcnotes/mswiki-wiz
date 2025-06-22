@@ -13,6 +13,20 @@ export const QuestPaths = {
   QUEST_IMG: (img: string) => `Quest/QuestData/${img}`,
 };
 
+export type QuestCategories = {
+  [x: number]: {
+    [y: number]: {
+      title: string,
+      priority: number,
+    }
+    title: string,
+    priority: number,
+  },
+  reqType: {
+    [x: number]: string,
+  },
+};
+
 export type QuestSummary = {
   id: string,
   name?: string,
@@ -25,11 +39,6 @@ export type QuestPrerequisites = {
   id: number,
   name?: string,
   requires?: number[],
-};
-
-export type QuestCategory = {
-  category?: number,
-  title?: string,
 };
 
 export type QuestItem = {
@@ -120,15 +129,10 @@ export const QuestService = {
     }));
   },
   
-  async getQuestCategories(): Promise<QuestCategory[]> {
+  async getQuestCategories(): Promise<QuestCategories> {
     await WzReaderService.parseNode({ path: QuestPaths.QUEST_CATEGORIES });
-    const categories = await WzReaderService.getJson({ path: QuestPaths.QUEST_CATEGORIES }) as Record<number, QuestCategory>;
-    return Object.values(categories).filter(
-      (category) => category.category != null && category.title != null
-    ).map((category) => ({
-      category: category.category,
-      title: category.title,
-    }));
+    const categories = await WzReaderService.getJson({ path: QuestPaths.QUEST_CATEGORIES }) as QuestCategories;
+    return categories;
   },
 
   async getQuest({ img }: { img: string }): Promise<Quest> {

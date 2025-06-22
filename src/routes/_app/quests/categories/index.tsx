@@ -8,6 +8,6 @@ export const Route = createFileRoute('/_app/quests/categories/')({
 })
 
 function RouteComponent() {
-  const {quests, questCategories} = React.useContext(QuestContext);
-  return <QuestCategoryList quests={quests || []} questCategories={questCategories || []} />
+  const {quests} = React.useContext(QuestContext);
+  return <QuestCategoryList quests={quests || []} />
 }

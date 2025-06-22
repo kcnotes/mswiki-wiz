@@ -1,9 +1,8 @@
-import { QuestSummary, QuestCategory } from "../../services/quest_service";
+import { QuestSummary } from "../../services/quest_service";
 import { RowProps, Table } from "../table/table";
 import { groupBy } from "../../base/array";
 import { Link } from "@tanstack/react-router";
 import { TableTd, TableTh, TableTr } from "@mantine/core";
-import { guessCategoryNames } from "./quest_util";
 import { Routes } from "../../paths";
 
 type Column = "id" | "count";
@@ -22,9 +21,8 @@ const Header = () => (
   </TableTr>
 );
 
-export const QuestCategoryList = ({ quests, questCategories }: { quests: QuestSummary[], questCategories: QuestCategory[] }) => {
-  const questsWithCategories = guessCategoryNames(quests, questCategories);
-  const questsByCategory = groupBy(questsWithCategories, (q) => q.category);
+export const QuestCategoryList = ({ quests }: { quests: QuestSummary[] }) => {
+  const questsByCategory = groupBy(quests, (q) => q.area?.toString() ?? 'Unknown');
   const data = Object.entries(questsByCategory).map(([category, quests]) => ({
     id: category,
     count: quests.length.toString(),

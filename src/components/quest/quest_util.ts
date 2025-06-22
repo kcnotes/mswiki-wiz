@@ -1,25 +1,9 @@
-import { groupBy } from "../../base/array";
 import { getFormattedString } from "../../base/string";
-import { QuestSummary, QuestCategory, Quest, QuestItem, HydratedQuest } from "../../services/quest_service";
+import { Quest, QuestItem, HydratedQuest, QuestSummary } from "../../services/quest_service";
 
-export type QuestWithCategory = QuestSummary & { category: string };
-
-export const guessCategoryNames = (quests: QuestSummary[], questCategories: QuestCategory[]): QuestWithCategory[] => {
-  // Sort by [] category first, then by area category
-  const questsByCategory = groupBy(quests, (q) => {
-    const name = q.name;
-    const category = name?.startsWith('[') && name?.includes(']')
-      ? name.slice(1, name.indexOf(']'))
-      : q.area != null
-        ? questCategories.find(c => c.category === q.area)?.title ?? 'Uncategorized'
-        : 'Uncategorized';
-    return category;
-  });
-  
-  return Object.entries(questsByCategory).flatMap(([category, quests]) => (
-    quests.map(q => ({ ...q, category }))
-  ));
-};
+export type QuestWithCategory = QuestSummary & {
+  category: string,
+}
 
 export type QuestDetail = {
   id: number,

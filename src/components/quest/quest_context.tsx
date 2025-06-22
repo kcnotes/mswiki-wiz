@@ -1,19 +1,21 @@
 import React from "react";
-import { QuestCategory, QuestService } from "../../services/quest_service";
+import { QuestCategories, QuestService } from "../../services/quest_service";
 import { useQuery } from "@tanstack/react-query";
-import { guessCategoryNames, QuestWithCategory } from "./quest_util";
+import { QuestWithCategory } from "./quest_util";
 import { Stack, Loader, Text, Alert } from "@mantine/core";
 import { IconAlertCircle } from "@tabler/icons-react";
 
 export type QuestContextState = {
   quests: QuestWithCategory[],
-  questCategories: QuestCategory[],
-}
+  questCategories: QuestCategories,
+};
 
 // Global state, loaded once on quest page visit
 export const QuestContext = React.createContext<QuestContextState>({
   quests: [],
-  questCategories: [],
+  questCategories: {
+    reqType: {},
+  },
 });
 
 export const QuestContextProvider = ({ children }: { children: React.ReactNode }) => {
@@ -22,7 +24,7 @@ export const QuestContextProvider = ({ children }: { children: React.ReactNode }
     error,
     data: quests,
   } = useQuery({
-    queryKey: ["quests"],
+    queryKey: ["questSummaries"],
     queryFn: QuestService.getQuestSummaries,
   });
   const {
@@ -33,9 +35,11 @@ export const QuestContextProvider = ({ children }: { children: React.ReactNode }
     queryKey: ['questCategories'],
     queryFn: QuestService.getQuestCategories,
   });
-  const questsWithCategories = guessCategoryNames(quests || [], questCategories || []);
 
-
+  const questsWithCategories = quests?.map((quest) => ({
+    ...quest,
+    category: quest.area?.toString() ?? 'Unknown',
+  })) ?? [];
 
   if (isLoading || isLoadingCategories) {
     return (
@@ -55,7 +59,7 @@ export const QuestContextProvider = ({ children }: { children: React.ReactNode }
   }
   
 
-  if (quests == null || quests.length === 0 || questCategories == null || questCategories.length === 0) {
+  if (quests == null || quests.length === 0 || questCategories == null) {
     return (
       <Alert icon={<IconAlertCircle />} color="red">
         No quests and/or quest categories found.
